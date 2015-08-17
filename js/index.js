@@ -65,6 +65,12 @@ function handleFileSelect(e) {
           canvas.width = _w;
           canvas.height = _h;
           ctx.drawImage(image, 0, 0, _w, _h);
+
+          // TEST
+          ctx.fillStyle = "rgb(255, 99, 99)";
+          ctx.fillRect(0, 0, _w/2, _h/2);
+          ctx.fillStyle = "rgb(99, 255, 99)";
+          ctx.fillRect(_w/2, _h/2, _w/2, _h/2);
         }, createMosaic(image, imagePath));
 
       }
@@ -113,7 +119,7 @@ function createMosaic(image, imagePath) {
               // if(parseInt(src.data[index + 3]) !== 0) {
                 var key = parseInt(src.data[index])+  ', ' + parseInt(src.data[index + 1]) + ', ' + parseInt(src.data[index + 2]);
 
-                console.log("color:"+key);
+                // console.log("color:"+key);
 
                 if (key in colors) colors[key]++;
                 else colors[key] = 1;
@@ -126,7 +132,7 @@ function createMosaic(image, imagePath) {
           var color = '';
           var dominant = 0;
           for (var key in colors) {
-            console.log("key:"+key + ", color:" + colors[key]);
+            // console.log("key:"+key + ", color:" + colors[key]);
             if (dominant < colors[key] && colors[key] !== '0, 0, 0' && colors[key] !== '255, 255, 255') color = key;
           }
           console.log("dominant color : " + color);
@@ -135,14 +141,20 @@ function createMosaic(image, imagePath) {
           // if(color !== '0, 0, 0') {
             colorMap.push(color);
             // console.log("start create MOZAIC");
-            items.push(new MozaicItem(ctx, j / 4, i / 4, 50, 50, imagePath));
+            var item = new MozaicItem(ctx, j / 4, i / 4, 50, 50, imagePath, color);
+            items.push(item);
+            // TODO: today start hear and success -> delete
+            ctx.fillStyle = "rgb(23, 23, 230)";
+            // ctx.fillStyle = "rgb(" + item.color + ")";
+            ctx.fillRect(item.x, item.y, item.width, item.height);
+
             // TEST mosaic image
-            var img = new Image();
+            // var img = new Image();
             // TODO: This image's path is changed neary color image path
-            img.src = imagePath;
-            img.addEventListener('load', function() {
-              ctx.drawImage(image, j / 4, i / 4, 50, 50);
-            }, false);
+            // img.src = imagePath;
+            // img.addEventListener('load', function() {
+            //   ctx.drawImage(image, j / 4, i / 4, 50, 50);
+            // }, false);
           // }
         }
       }
